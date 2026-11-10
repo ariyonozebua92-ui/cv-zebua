@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Mahasiswa</title>
+
+<style>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* BACKGROUND */
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 35px 15px;
+    color: white;
+
+    background:
+        linear-gradient(135deg,
+        #050505 25%,
+        #252525 25.2%,
+        #111 40%,
+        #050505 40.2%,
+        #202020 60%,
+        #050505 60.2%);
+
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ORNAMEN */
+body::before {
+    content: "";
+    position: fixed;
+    width: 450px;
+    height: 450px;
+    top: -280px;
+    left: -180px;
+    transform: rotate(45deg);
+    border: 2px solid #555;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 450px;
+    height: 450px;
+    bottom: -300px;
+    right: -150px;
+    transform: rotate(45deg);
+    border: 2px solid #555;
+    pointer-events: none;
+}
+
+/* CONTAINER */
+.container {
+    width: 100%;
+    max-width: 790px;
+    position: relative;
+    z-index: 2;
+}
+
+/* LOGIN BOX */
+.login-box {
+    background: rgba(10,10,10,0.96);
+    border: 2px solid #666;
+    border-radius: 25px;
+    padding: 40px 45px;
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,0.8),
+        0 0 20px rgba(255,255,255,0.05);
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 38px;
+}
+
+.icon {
+    font-size: 55px;
+    margin-bottom: 18px;
+}
+
+.header h1 {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.header p {
+    color: #ccc;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+/* INPUT */
+.input-group {
+    margin-bottom: 30px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 13px;
+}
+
+.input-box {
+    position: relative;
+}
+
+.input-box input {
+    width: 100%;
+    height: 65px;
+    padding: 15px 75px 15px 20px;
+
+    background: #222;
+    border: 2px solid #666;
+    border-radius: 12px;
+
+    color: white;
+    font-size: 18px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-box input:focus {
+    border-color: #ccc;
+}
+
+.input-box input::placeholder {
+    color: #aaa;
+}
+
+/* IKON LIHAT PASSWORD */
+.toggle-password {
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 2;
+    padding: 5px;
+}
+
+/* STATUS BENAR DAN SALAH */
+.status-icon {
+    position: absolute;
+    right: 19px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 23px;
+    font-weight: bold;
+    display: none;
+}
+
+.status-icon.benar {
+    display: block;
+    color: #00e676;
+}
+
+.status-icon.salah {
+    display: block;
+    color: #ff4444;
+}
+
+.input-box input.valid {
+    border-color: #00e676;
+}
+
+.input-box input.invalid {
+    border-color: #ff4444;
+}
+
+/* PESAN ERROR */
+.error-msg {
+    display: none;
+    background: #3a1f1f;
+    border: 1px solid #7a3b3b;
+    color: #ffb4b4;
+    padding: 13px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+/* TOMBOL LOGIN */
+.login-btn {
+    width: 100%;
+    height: 67px;
+
+    background: linear-gradient(
+        135deg,
+        #353535,
+        #111
+    );
+
+    border: 1px solid #777;
+    border-radius: 13px;
+
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #444;
+}
+
+/* PEMBATAS */
+.separator {
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #777,
+        transparent
+    );
+    margin: 30px 0;
+}
+
+/* PETUNJUK */
+.petunjuk {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+
+    background: #191919;
+    border: 1px solid #444;
+    border-radius: 15px;
+    padding: 22px;
+}
+
+.info-icon {
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background: #444;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.petunjuk h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.petunjuk p {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #ccc;
+}
+
+.petunjuk strong {
+    color: white;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 28px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* RESPONSIVE HP */
+@media(max-width: 600px) {
+    body {
+        padding: 25px 14px;
+    }
+
+    .login-box {
+        padding: 28px 21px;
+        border-radius: 20px;
+    }
+
+    .header h1 {
+        font-size: 29px;
+    }
+
+    .header p {
+        font-size: 14px;
+    }
+
+    .icon {
+        font-size: 45px;
+    }
+
+    .input-group label {
+        font-size: 16px;
+    }
+
+    .input-box input {
+        height: 58px;
+        font-size: 15px;
+    }
+
+    .login-btn {
+        height: 58px;
+        font-size: 19px;
+    }
+
+    .petunjuk {
+        padding: 16px;
+        gap: 13px;
+    }
+
+    .petunjuk h3 {
+        font-size: 17px;
+    }
+
+    .petunjuk p {
+        font-size: 14px;
+    }
+
+    .info-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="login-box">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="icon">🎓</div>
+            <h1>Login Mahasiswa</h1>
+            <p>
+                Masukkan data akun mahasiswa yang sesuai
+                untuk membuka halaman Curriculum Vitae.
+            </p>
+        </div>
+
+        <!-- FORM LOGIN -->
+        <form id="formLogin">
+
+            <!-- PESAN ERROR -->
+            <div class="error-msg" id="pesanError">
+                Username atau password salah. Coba lagi.
+            </div>
+
+            <!-- USERNAME -->
+            <div class="input-group">
+                <label for="username">Username</label>
+                <div class="input-box">
+                    <input type="text"
+                    id="username"
+                    placeholder="Masukkan username"
+                    required>
+
+                    <span class="status-icon"
+                    id="statusUser"></span>
+                </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-box">
+                    <input type="password"
+                    id="password"
+                    placeholder="Masukkan password"
+                    required>
+
+                    <button type="button"
+                    class="toggle-password"
+                    id="togglePassword"
+                    aria-label="Tampilkan password"
+                    onclick="togglePasswordVisibility()">👁️</button>
+
+                    <span class="status-icon"
+                    id="statusPass"></span>
+                </div>
+            </div>
+
+            <!-- BUTTON -->
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+        </form>
+
+        <!-- PEMBATAS -->
+        <div class="separator"></div>
+
+        <!-- PETUNJUK -->
+        <div class="petunjuk">
+            <div class="info-icon">i</div>
+            <div>
+                <h3>Petunjuk Login</h3>
+                <p>Username : <strong>zebua</strong></p>
+                <p>Password : <strong>zebua123</strong></p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2026 Curriculum Vitae
+    </div>
+</div>
+
+<script>
+
+// FITUR LIHAT DAN SEMBUNYIKAN PASSWORD
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("password");
+    const toggleButton = document.getElementById("togglePassword");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.textContent = "🙈";
+        toggleButton.setAttribute("aria-label", "Sembunyikan password");
+    } else {
+        passwordInput.type = "password";
+        toggleButton.textContent = "👁️";
+        toggleButton.setAttribute("aria-label", "Tampilkan password");
+    }
+}
+
+// DATA LOGIN
+const USERNAME = "zebua";
+const PASSWORD = "zebua123";
+
+// HALAMAN CV
+const HALAMAN_CV = "login.html";
+
+// AMBIL ELEMEN HTML
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+
+const statusUser = document.getElementById("statusUser");
+const statusPass = document.getElementById("statusPass");
+
+const pesan = document.getElementById("pesanError");
+
+// FUNGSI VALIDASI OTOMATIS
+function validasi(input, status, nilaiBenar, caseSensitive = false) {
+
+    input.addEventListener("input", function () {
+
+        const nilaiInput = caseSensitive
+            ? input.value
+            : input.value.toLowerCase();
+
+        const nilaiTarget = caseSensitive
+            ? nilaiBenar
+            : nilaiBenar.toLowerCase();
+
+        if (input.value === "") {
+
+            status.style.display = "none";
+            status.className = "status-icon";
+
+            input.classList.remove("valid", "invalid");
+
+        }
+
+        else if (nilaiInput === nilaiTarget) {
+
+            status.textContent = "✓";
+            status.className = "status-icon benar";
+
+            input.classList.add("valid");
+            input.classList.remove("invalid");
+
+        }
+
+        else {
+
+            status.textContent = "✕";
+            status.className = "status-icon salah";
+
+            input.classList.add("invalid");
+            input.classList.remove("valid");
+
+        }
+
+        // SEMBUNYIKAN PESAN ERROR SAAT MENGETIK ULANG
+        pesan.style.display = "none";
+
+    });
+
+}
+
+// AKTIFKAN VALIDASI
+validasi(username, statusUser, USERNAME);
+validasi(password, statusPass, PASSWORD, true);
+
+// PROSES LOGIN
+document.getElementById("formLogin")
+.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+
+    const user = username.value.trim();
+    const pass = password.value;
+
+    if (
+        user.toLowerCase() === USERNAME &&
+        pass === PASSWORD
+    ) {
+
+        sessionStorage.setItem("login", "ya");
+
+        window.location.href = HALAMAN_CV;
+
+    }
+
+    else {
+
+        pesan.style.display = "block";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
